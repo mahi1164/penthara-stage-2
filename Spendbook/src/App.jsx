@@ -33,7 +33,7 @@ export default function App() {
   const [draftNum, setDraftNum] = useState('');
 
   useEffect(() => {
-    const tick = setInterval(() => setSecondsOpen(secondsOpen + 1), 1000);
+    const tick = setInterval(() => setSecondsOpen((prev) => prev + 1), 1000);
     return () => clearInterval(tick);
   }, []);
 
