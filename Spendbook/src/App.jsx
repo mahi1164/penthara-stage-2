@@ -40,8 +40,8 @@ export default function App() {
   const activeView = { search: query, category: categoryFilter };
 
   useEffect(() => {
-    setPage(1); // back to page 1 whenever the view changes
-  }, [activeView]);
+  setPage(1);
+}, [query, categoryFilter]);
 
   useEffect(() => {
     if (query.trim() === '') { setServerMatches(null); return; }
