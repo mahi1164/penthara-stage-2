@@ -93,7 +93,7 @@ export default function App() {
       )}
       <ul className="rows">
         {shown.map((x, index) => (
-          <ExpenseRow key={index} expense={x}
+          <ExpenseRow key={x.id} expense={x}
             onToggle={() => toggleReimbursed(x)} onRemove={() => removeExpense(x)} />
         ))}
       </ul>

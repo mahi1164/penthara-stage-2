@@ -41,3 +41,17 @@ I moved `NewExpenseForm` outside of `App` so its component identity remains stab
 
 ### Verification
 I left the inputs focused while the timer continued running and confirmed that the focus remained. I also typed continuously into both the description and amount fields and successfully added an expense. Pagination, reimbursement toggling, and the timer continued to work correctly after the change.
+
+## Bug 4 - Expense notes moved between the expenses
+
+### Symptom
+The notes i entered for designated expenses on the list were moving as i performed deletion or any change in the list. So one expense's note automatically moved to another's when the former was deleted, and the latter's moved to the next.
+
+### Root Cause
+Expense rows were using the array index as their React key. So whenever an expense was deleted, the remaining expenses shifted positions, which meant the key also shifted among the expenses. Since the note was tied to the position, not the actual expense, it looked like the note had jumped to a different expense.
+
+### Why the Fix Is Correct
+I changed the key from the array index to the expense's own unique ID. Now React always knows exactly which row belongs to which expense, even if the list changes order or something gets deleted, the notes now didn't move from one expense to another.
+
+### Verification
+I assigned three distinctive notes to the three expenses, officeLunch, metro and june rent. Then, I deleted the office lunch expense but the metro card top up and june rent expenses retained their own notes. So this fixed the row identity problem which was happening because of using the positions as key.
