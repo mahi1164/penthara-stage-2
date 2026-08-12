@@ -63,33 +63,20 @@ export default function App() {
     setExpenses(expenses.filter((it) => it.id !== x.id));
   }
 
-  function NewExpenseForm() {
-    function submit(e) {
-      e.preventDefault();
-      if (draftText.trim() === '' || Number(draftNum) <= 0) return;
-      setExpenses([
-        { id: Date.now(), description: draftText.trim(), category: 'Food', amount: Number(draftNum), reimbursed: false },
-        ...expenses,
-      ]);
-      setDraftText('');
-      setDraftNum('');
-    }
-    return (
-      <form className="new-entry" onSubmit={submit}>
-        <input placeholder="What was it for?" value={draftText}
-          onChange={(e) => setDraftText(e.target.value)} />
-        <input placeholder="Amount (₹)" type="number" value={draftNum}
-          onChange={(e) => setDraftNum(e.target.value)} />
-        <button type="submit">Add expense</button>
-      </form>
-    );
-  }
+
 
   return (
     <div className="app">
       <h1>Spendbook</h1>
       <p className="timer">Time on page: {secondsOpen}s</p>
-      <NewExpenseForm />
+      <NewExpenseForm
+  draftText={draftText}
+  setDraftText={setDraftText}
+  draftNum={draftNum}
+  setDraftNum={setDraftNum}
+  expenses={expenses}
+  setExpenses={setExpenses}
+/>
       <div className="filters">
         <input placeholder="Search expenses…" value={query}
           onChange={(e) => setQuery(e.target.value)} />
@@ -116,6 +103,53 @@ export default function App() {
         <button disabled={page >= pageCount} onClick={() => setPage(page + 1)}>Next</button>
       </div>
     </div>
+  );
+}
+function NewExpenseForm({
+  draftText,
+  setDraftText,
+  draftNum,
+  setDraftNum,
+  expenses,
+  setExpenses,
+}) {
+  function submit(e) {
+    e.preventDefault();
+
+    if (draftText.trim() === '' || Number(draftNum) <= 0) return;
+
+    setExpenses([
+      {
+        id: Date.now(),
+        description: draftText.trim(),
+        category: 'Food',
+        amount: Number(draftNum),
+        reimbursed: false,
+      },
+      ...expenses,
+    ]);
+
+    setDraftText('');
+    setDraftNum('');
+  }
+
+  return (
+    <form className="new-entry" onSubmit={submit}>
+      <input
+        placeholder="What was it for?"
+        value={draftText}
+        onChange={(e) => setDraftText(e.target.value)}
+      />
+
+      <input
+        placeholder="Amount (₹)"
+        type="number"
+        value={draftNum}
+        onChange={(e) => setDraftNum(e.target.value)}
+      />
+
+      <button type="submit">Add expense</button>
+    </form>
   );
 }
 

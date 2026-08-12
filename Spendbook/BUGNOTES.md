@@ -27,3 +27,17 @@ I changed the code part of useEffect to use 'query' and 'categoryfilter' depende
 
 ### Verification
 I clicked "Next" and "Prev" several times and the page numbers changed correctly without jumping back. I also changed the search text and category filter, and confirmed the page correctly went back to page 1 when it should.
+
+## Bug 3 - The input fields for adding an expense lost cursor focus
+
+### Symptom
+The description and amount inputs lost focus whenever i tried to type any expense. It would lose the focus immediately after a second of focusing on the field with the cursor, which in turn would make it impossible for the user to type anything in the input boxes.
+
+### Root Cause
+The new form was defined under the App component. So whenever the app re-rendered, a new component function was created which led react to treat the expense form as a new component and caused it to reset or restart. This was causing the elements to lose the cursor focus.
+
+### Why the Fix Is Correct
+I moved `NewExpenseForm` outside of `App` so its component identity remains stable across App re-renders. The values and state-update functions it needs are passed to it as props. This prevents the form from being unnecessarily restarted while keeping its existing functionality.
+
+### Verification
+I left the inputs focused while the timer continued running and confirmed that the focus remained. I also typed continuously into both the description and amount fields and successfully added an expense. Pagination, reimbursement toggling, and the timer continued to work correctly after the change.
