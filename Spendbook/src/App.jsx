@@ -55,9 +55,14 @@ export default function App() {
   const shown = visible.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   function toggleReimbursed(x) {
-    x.reimbursed = !x.reimbursed;
-    setExpenses(expenses);
-  }
+  const newExpenses = expenses.map((expense) =>
+    expense.id === x.id
+      ? { ...expense, reimbursed: !expense.reimbursed }
+      : expense
+  );
+
+  setExpenses(newExpenses);
+}
 
   function removeExpense(x) {
     setExpenses(expenses.filter((it) => it.id !== x.id));

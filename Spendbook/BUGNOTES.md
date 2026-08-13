@@ -55,3 +55,18 @@ I changed the key from the array index to the expense's own unique ID. Now React
 
 ### Verification
 I assigned three distinctive notes to the three expenses, officeLunch, metro and june rent. Then, I deleted the office lunch expense but the metro card top up and june rent expenses retained their own notes. So this fixed the row identity problem which was happening because of using the positions as key.
+
+## Bug 5 - The fixing of Reimbursement
+
+### Symptom
+The reimbursement checkbox was working weirdly. Sometimes it would work as intended but other times the UI wouldn't update the change in the check ticks.
+
+### Root Cause
+The code was directly mutating "x", which was part of a react state. Because of this, react wasn't noticing the change because it was using the same object and array reference. 
+
+### Why the Fix is Correct
+I rewrote the toggle function to build a new list of expenses, and inside that list, create a fresh copy of only the one expense being changed. All the other expenses stay exactly as they were. This way, React always gets a clear signal that something changed.
+
+### Verification
+I checked and unchecked reimbursement on several expenses, including ones on different pages. I also switched between pages and toggled multiple expenses in a row. Every checkbox updated correctly and kept its own state, and the timer kept running the whole time without issues.
+
