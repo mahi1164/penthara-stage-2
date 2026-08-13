@@ -37,11 +37,11 @@ export default function App() {
     return () => clearInterval(tick);
   }, []);
 
-  const activeView = { search: query, category: categoryFilter };
+ 
 
   useEffect(() => {
-  setPage(1);
-}, [query, categoryFilter]);
+    setPage(1);
+  }, [query, categoryFilter]);
 
   useEffect(() => {
   if (query.trim() === '') {
@@ -63,7 +63,7 @@ export default function App() {
     ignore = true;
     clearTimeout(timer);
   };
-}, [query, expenses]);;
+  }, [query, expenses]);
 
   const visible = expenses
     .filter((x) => x.description.toLowerCase().includes(query.toLowerCase()))
@@ -114,7 +114,7 @@ export default function App() {
         <p className="matches">Server search: {serverMatches.length} match(es) for “{query}”</p>
       )}
       <ul className="rows">
-        {shown.map((x, index) => (
+        {shown.map((x) => (
           <ExpenseRow key={x.id} expense={x}
             onToggle={() => toggleReimbursed(x)} onRemove={() => removeExpense(x)} />
         ))}
