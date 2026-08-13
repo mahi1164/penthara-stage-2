@@ -44,9 +44,26 @@ export default function App() {
 }, [query, categoryFilter]);
 
   useEffect(() => {
-    if (query.trim() === '') { setServerMatches(null); return; }
-    lookupExpenses(query, expenses).then((found) => setServerMatches(found));
-  }, [query, expenses]);
+  if (query.trim() === '') {
+    setServerMatches(null);
+    return;
+  }
+
+  let ignore = false;
+
+  const timer = setTimeout(() => {
+    lookupExpenses(query, expenses).then((found) => {
+      if (!ignore) {
+        setServerMatches(found);
+      }
+    });
+  }, 300);
+
+  return () => {
+    ignore = true;
+    clearTimeout(timer);
+  };
+}, [query, expenses]);;
 
   const visible = expenses
     .filter((x) => x.description.toLowerCase().includes(query.toLowerCase()))

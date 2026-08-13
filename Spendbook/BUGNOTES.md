@@ -70,3 +70,16 @@ I rewrote the toggle function to build a new list of expenses, and inside that l
 ### Verification
 I checked and unchecked reimbursement on several expenses, including ones on different pages. I also switched between pages and toggled multiple expenses in a row. Every checkbox updated correctly and kept its own state, and the timer kept running the whole time without issues.
 
+## Bug 6 - Server search could show stale results
+
+### Symptom
+When i typed quickly for any search, the search matches showed older search matches for a brief time before updating it to the latest search match.
+
+### Root Cause
+Every time i typed a letter, the app sent a request to the server to look up results. Since these requests travel over the network, they don't always come back in the same order they were sent. So sometimes an older request would finish after a newer one, and it would overwrite the newer, correct result with old, outdated info.
+
+### Why the Fix Is Correct
+I added a 300 ms debounce so the lookup waits until the user pauses typing before starting a request. I also mark the previous search as outdated during effect cleanup and ignore its response if it finishes later. This prevents an older lookup from updating the results for a newer request.
+
+### Verification
+I tested fast typing with several changing search queries and confirmed that the server match count no longer gets overwritten by an older search. I also confirmed that the lookup waits briefly after typing stops instead of running for every keystroke.
