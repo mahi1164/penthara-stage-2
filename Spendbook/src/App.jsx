@@ -58,8 +58,9 @@ export default function App() {
   }, [expenses]);
 
   useEffect(() => {
+  setServerMatches(null);
+
   if (query.trim() === '') {
-    setServerMatches(null);
     return;
   }
   
