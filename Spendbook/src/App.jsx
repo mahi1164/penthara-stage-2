@@ -128,6 +128,11 @@ export default function App() {
       {serverMatches !== null && (
         <p className="matches">Server search: {serverMatches.length} match(es) for “{query}”</p>
       )}
+      <p className="count">
+        Showing {shown.length} of {visible.length} expenses
+      </p>
+
+<ul className="rows"></ul>
       <ul className="rows">
         {shown.map((x) => (
           <ExpenseRow key={x.id} expense={x}
