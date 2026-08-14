@@ -23,7 +23,17 @@ function lookupExpenses(q, expenses) {
 const PAGE_SIZE = 3;
 
 export default function App() {
-  const [expenses, setExpenses] = useState(STARTING_EXPENSES);
+  
+  const [expenses, setExpenses] = useState(() => {
+  const saved = localStorage.getItem('spendbook-expenses');
+
+  if (saved === null) {
+    return STARTING_EXPENSES;
+  }
+
+  return JSON.parse(saved);
+  });
+
   const [query, setQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [page, setPage] = useState(1);
@@ -44,10 +54,15 @@ export default function App() {
   }, [query, categoryFilter]);
 
   useEffect(() => {
+  localStorage.setItem('spendbook-expenses', JSON.stringify(expenses));
+  }, [expenses]);
+
+  useEffect(() => {
   if (query.trim() === '') {
     setServerMatches(null);
     return;
   }
+  
 
   let ignore = false;
 
