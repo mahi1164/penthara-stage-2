@@ -155,11 +155,24 @@ function NewExpenseForm({
   expenses,
   setExpenses,
 }) {
+
+  const descriptionInvalid = draftText.trim() === '';
+  const amountInvalid = Number(draftNum) <= 0;
+
+  let validationMessage = '';
+
+  if (descriptionInvalid && amountInvalid) {
+    validationMessage = 'Please enter a description and an amount greater than 0.';
+  } else if (descriptionInvalid) {
+    validationMessage = 'Please enter what the expense was for.';
+  } else if (amountInvalid) {
+    validationMessage = 'Please enter an amount greater than 0.';
+  }
   function submit(e) {
     e.preventDefault();
 
     if (draftText.trim() === '' || Number(draftNum) <= 0) return;
-
+    
     setExpenses([
       {
         id: Date.now(),
@@ -189,8 +202,13 @@ function NewExpenseForm({
         value={draftNum}
         onChange={(e) => setDraftNum(e.target.value)}
       />
+      {validationMessage && (
+      <p className="validation-message">{validationMessage}</p>
+       )}
 
-      <button type="submit">Add expense</button>
+      <button type="submit" disabled={descriptionInvalid || amountInvalid}>
+      Add expense
+        </button>
     </form>
   );
 }
