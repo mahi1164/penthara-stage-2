@@ -157,8 +157,9 @@ function NewExpenseForm({
   setExpenses,
 }) {
 
+  const amount = Number(draftNum);
   const descriptionInvalid = draftText.trim() === '';
-  const amountInvalid = Number(draftNum) <= 0;
+  const amountInvalid = !Number.isFinite(amount) || amount <= 0;
 
   let validationMessage = '';
 
@@ -172,14 +173,14 @@ function NewExpenseForm({
   function submit(e) {
     e.preventDefault();
 
-    if (draftText.trim() === '' || Number(draftNum) <= 0) return;
+    if (descriptionInvalid || amountInvalid) return;
     
     setExpenses([
       {
         id: Date.now(),
         description: draftText.trim(),
         category: 'Food',
-        amount: Number(draftNum),
+        amount,
         reimbursed: false,
       },
       ...expenses,
