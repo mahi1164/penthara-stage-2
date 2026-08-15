@@ -133,7 +133,7 @@ export default function App() {
         Showing {shown.length} of {visible.length} expenses
       </p>
 
-<ul className="rows"></ul>
+
       <ul className="rows">
         {shown.map((x) => (
           <ExpenseRow key={x.id} expense={x}
